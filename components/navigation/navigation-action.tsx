@@ -6,7 +6,7 @@ import { ActionTooltip } from "@/components/action-tooltip";
 
 interface NavigationActionProps {}
 
-const NavigationAction = ({}: NavigationActionProps) => {
+export const NavigationAction = ({}: NavigationActionProps) => {
   return (
     <div className="">
       <ActionTooltip side="right" align="center" label="Add a server">
@@ -22,5 +22,3 @@ const NavigationAction = ({}: NavigationActionProps) => {
     </div>
   );
 };
-
-export default NavigationAction;
