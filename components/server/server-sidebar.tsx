@@ -1,36 +1,21 @@
-import { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
-import { ChannelType, MemberRole } from "@prisma/client";
+import { ChannelType } from "@prisma/client";
 
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+
 import { ServerHeader } from "./server-header";
 import { ServerSearch } from "./server-search";
+import { ServerSection } from "./server-section";
+import { ServerChannel } from "./server-channel";
+import { channelIconMap, roleIconMap } from "@/lib/icon-lookups";
 
 interface ServerSidebarProps {
   serverId: string;
 }
-
-const iconMap: {
-  [key in ChannelType]: ReactNode;
-} = {
-  [ChannelType.TEXT]: <Hash className="mr-2 h-4 w-4" />,
-  [ChannelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
-  [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
-};
-
-const roleIconMap: {
-  [key in MemberRole]: ReactNode | null;
-} = {
-  [MemberRole.GUEST]: null,
-  [MemberRole.MODERATOR]: (
-    <ShieldCheck className="h-4 w-4 mr-2 text-indigo-500" />
-  ),
-  [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500" />,
-};
 
 export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const profile = await currentProfile();
@@ -95,7 +80,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 data: textChannels?.map((channel) => ({
                   id: channel.id,
                   name: channel.name,
-                  icon: iconMap[channel.type],
+                  icon: channelIconMap("mr-2")[channel.type],
                 })),
               },
               {
@@ -104,7 +89,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 data: audioChannels?.map((channel) => ({
                   id: channel.id,
                   name: channel.name,
-                  icon: iconMap[channel.type],
+                  icon: channelIconMap("mr-2")[channel.type],
                 })),
               },
               {
@@ -113,7 +98,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 data: videoChannels?.map((channel) => ({
                   id: channel.id,
                   name: channel.name,
-                  icon: iconMap[channel.type],
+                  icon: channelIconMap("mr-2")[channel.type],
                 })),
               },
               {
@@ -122,12 +107,32 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 data: members?.map((member) => ({
                   id: member.id,
                   name: member.profile.name,
-                  icon: roleIconMap[member.role],
+                  icon: roleIconMap("mr-2")[member.role],
                 })),
               },
             ]}
           />
         </div>
+        <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-2" />
+
+        {!!textChannels?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="channels"
+              channelType={ChannelType.TEXT}
+              role={role}
+              label="Text Channels"
+            />
+            {textChannels.map((channel) => (
+              <ServerChannel
+                key={channel.id}
+                channel={channel}
+                role={role}
+                server={server}
+              />
+            ))}
+          </div>
+        )}
       </ScrollArea>
     </div>
   );

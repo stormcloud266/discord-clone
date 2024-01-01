@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import qs from "query-string";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,6 @@ import {
   Loader2,
   MoreVertical,
   Shield,
-  ShieldAlert,
   ShieldCheck,
   ShieldQuestion,
 } from "lucide-react";
@@ -40,14 +39,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserAvatar } from "@/components/user-avatar";
 
 import { isServerWithMembers, useModal } from "@/hooks/use-modal-store";
-
-const roleIconMap: {
-  [key in MemberRole]: ReactNode | null;
-} = {
-  GUEST: null,
-  MODERATOR: <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
-  ADMIN: <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
-};
+import { roleIconMap } from "@/lib/icon-lookups";
 
 export const MembersModal = () => {
   const router = useRouter();
@@ -117,7 +109,7 @@ export const MembersModal = () => {
               <div className="flex flex-col gap-y-1">
                 <div className="text-xs font-semibold flex items-center">
                   {member.profile.name}
-                  {roleIconMap[member.role]}
+                  {roleIconMap("ml-2")[member.role]}
                 </div>
                 <p className="text-xs text-zinc-500">{member.profile.email}</p>
               </div>
