@@ -13,7 +13,7 @@ import NavigationItem from "./navigation-item";
 
 interface NavigationSidebarProps {}
 
-const NavigationSidebar = async ({}: NavigationSidebarProps) => {
+export const NavigationSidebar = async ({}: NavigationSidebarProps) => {
   const profile = await currentProfile();
 
   if (!profile) {
@@ -59,5 +59,3 @@ const NavigationSidebar = async ({}: NavigationSidebarProps) => {
     </div>
   );
 };
-
-export default NavigationSidebar;

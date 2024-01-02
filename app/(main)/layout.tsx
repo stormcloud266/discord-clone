@@ -1,4 +1,4 @@
-import NavigationSidebar from "@/components/navigation/navigation-sidebar";
+import { NavigationSidebar } from "@/components/navigation/navigation-sidebar";
 import { PropsWithChildren } from "react";
 
 const MainLayout = async ({ children }: PropsWithChildren) => {
