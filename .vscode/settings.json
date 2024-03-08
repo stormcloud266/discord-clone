@@ -1,3 +1,5 @@
 {
-  "cSpell.words": ["lucide", "uuidv", "zustand"]
+  "cSpell.words": ["lucide", "uuidv", "zustand"],
+  "files.autoSave": "afterDelay",
+  "editor.formatOnSave": true
 }
